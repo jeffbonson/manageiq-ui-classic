@@ -2,6 +2,8 @@
 %h3= _('Fields')
 #instance_fields_div
   - if !@in_a_form
+    = render :partial => 'datastore_list', :locals => {:type => MiqAeClassHelper::DATASTORE_TYPES[:fields],
+                                                        :data => {:fields => @ae_class.ae_fields, :record => @record}}
     - state_class = state_class?(@record.class_id)
     %table#instance_fields_grid.table.table-striped.table-bordered
       %thead

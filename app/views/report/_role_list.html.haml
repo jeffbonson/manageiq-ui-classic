@@ -14,6 +14,7 @@
       - if @sb[:menu].empty?
         = render :partial => 'layouts/info_msg', :locals => {:message => _("No Saved Reports available.")}
       - else
+        = react('RoleList', {:roles => @sb[:menu] && @sb[:menu].invert, :treeBox => @sb[:active_tree]})
         %table.table.table-striped.table-bordered.table-hover
           %tbody
             - @sb[:menu].invert.each do |pp|

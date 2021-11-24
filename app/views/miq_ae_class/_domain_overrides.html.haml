@@ -1,5 +1,6 @@
 - if @domain_overrides && @domain_overrides.count > 1
   %h3= _('Domain Overrides (by priority)')
+  = render :partial => 'datastore_list', :locals => {:type => MiqAeClassHelper::DATASTORE_TYPES[:domain], :data => @domain_overrides}
   %table.table.table-striped.table-bordered.table-hover
     %tbody
       - @domain_overrides.each do |name, id|

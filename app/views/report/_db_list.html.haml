@@ -1,4 +1,14 @@
 - if x_active_tree == :db_tree
+  - is_dashboard = @sb[:nodes].nil? || (@sb[:nodes] && @sb[:nodes].length == 1)
+  - is_group = @sb[:nodes] && @sb[:nodes].last == "g" && !@in_a_form
+  - is_widget = @sb[:nodes].length == 3 && @sb[:nodes][1] == "g_g" && !@in_a_form
+  - if is_dashboard || is_group || is_widget
+    = react('DbList', {:nodes => @sb[:nodes],
+                        :activeTree => @sb[:active_tree],
+                        :dashboards => @db_nodes,
+                        :groups => @miq_groups && @miq_groups.sort_by(&:description),
+                        :widgets => @widgetsets && @widgetsets.sort_by { |widgetset| widgetset.name.downcase }},
+                        :initialData => @db_data)
   - if @sb[:nodes].nil? || (@sb[:nodes] && @sb[:nodes].length == 1)
     = render :partial => "layouts/flash_msg"
     %table.table.table-striped.table-bordered.table-hover

@@ -4,6 +4,7 @@
       / Show Schema
       %h3= _('Schema')
       - if @ae_class.ae_fields.present?
+        = render :partial => 'datastore_list', :locals => {:type => MiqAeClassHelper::DATASTORE_TYPES[:schema], :data => @ae_class.ae_fields}
         %table.table.table-striped.table-bordered
           %thead
             %tr

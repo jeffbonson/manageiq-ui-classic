@@ -3,6 +3,7 @@
     - unless @version_messages.blank?
       - @version_messages.each do |msg|
         = render :partial => 'layouts/info_msg', :locals => {:message => msg}
+    = render :partial => 'datastore_list', :locals => {:type => MiqAeClassHelper::DATASTORE_TYPES[:list], :data => @grid_data}
     %table#ns_list_grid.table.table-striped.table-bordered.table-hover.table-clickable.table-checkable
       %thead
         %th.table-view-pf-select

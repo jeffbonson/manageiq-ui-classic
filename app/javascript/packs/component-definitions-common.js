@@ -16,6 +16,7 @@ import CloudNetworkForm from '../components/cloud-network-form/cloud-network-for
 import CloudTenantForm from '../components/cloud-tenant-form';
 import CloudVolumeForm from '../components/cloud-volume-form';
 import ProviderForm from '../components/provider-form';
+import ChargebackAssignment from '../components/data-tables/chargeback-assignment';
 import CopyCatalogForm from '../components/copy-catalog-form/copy-catalog-form';
 import CopyDashboardForm from '../components/copy-dashboard-form/copy-dashboard-form';
 import DashboardWidget from '../components/dashboard-charts';
@@ -109,6 +110,7 @@ ManageIQ.component.addReact('BreadcrumbsBar', BreadcrumbsBar);
 ManageIQ.component.addReact('ButtonList', ButtonList);
 ManageIQ.component.addReact('ButtonGroupList', ButtonGroupList);
 ManageIQ.component.addReact('CatalogForm', CatalogForm);
+ManageIQ.component.addReact('ChargebackAssignment', ChargebackAssignment);
 ManageIQ.component.addReact('CloudNetworkForm', CloudNetworkForm);
 ManageIQ.component.addReact('CloudTenantForm', CloudTenantForm);
 ManageIQ.component.addReact('CloudVolumeForm', CloudVolumeForm);

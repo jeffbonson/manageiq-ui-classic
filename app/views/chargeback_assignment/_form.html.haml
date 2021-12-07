@@ -49,7 +49,10 @@
   - show_type = @edit[:new][:cbshow_typ]
   - if !(show_type.ends_with?("-tags") || show_type.ends_with?("-labels")) || @edit[:new][:cbtag_cat].present? || @edit[:new][:cblabel_key].present?
     %hr
+    - chargeback_assignment_data(@edit)
+    = @data
     - if @edit[:new][:cbshow_typ] == "tenant"
+      = 'one'
       %h3
         = _('Selections')
       %table.table.table-bordered.table-hover.table-treegrid
@@ -85,7 +88,9 @@
       :javascript
          $('.table-treegrid').treegrid({})
     - elsif @edit[:new][:cbshow_typ].ends_with?("-tags")
+      = 'two'
       - if @edit[:current_assignment].try(:first).try(:[], :tag) && "#{@edit[:current_assignment].try(:first).try(:[], :tag).second}-tags" == @edit[:new][:cbshow_typ]
+       
         %h3
           = _('Saved Items')
         %table.table.table-bordered.table-striped
@@ -124,7 +129,8 @@
                 miqInitSelectPicker();
                 miqSelectPickerEvent("#{@edit[:new][:cbshow_typ]}__#{id}", "#{url}")
     - elsif @edit[:new][:cbshow_typ].ends_with?("-labels")
-      - if @edit[:current_assignment].try(:first).try(:[], :label)
+      = 'three'
+      - if @edit[:current_assignment].try(:first).try(:[], :label) 
         %h3
           = _('Saved Items')
         %table.table.table-bordered.table-striped
@@ -163,6 +169,7 @@
                 miqInitSelectPicker();
                 miqSelectPickerEvent("#{@edit[:new][:cbshow_typ]}__#{id}", "#{url}")
     - else
+      = 'four'
       %h3
         = _('Selections')
       %table.table.table-bordered.table-striped

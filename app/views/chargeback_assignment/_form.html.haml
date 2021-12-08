@@ -50,7 +50,6 @@
   - if !(show_type.ends_with?("-tags") || show_type.ends_with?("-labels")) || @edit[:new][:cbtag_cat].present? || @edit[:new][:cblabel_key].present?
     %hr
     - chargeback_assignment_data(@edit)
-    = @data
     - if @edit[:new][:cbshow_typ] == "tenant"
       = 'one'
       %h3
@@ -65,6 +64,7 @@
             %tr.collapsed{:id => "tenant_#{id}"}
               %td.treegrid-node
                 = h(data[:name])
+                = '123'
               %td
                 - options = @edit[:cb_rates].invert.sort
                 = select_tag("#{@edit[:new][:cbshow_typ]}__#{id}",
@@ -77,6 +77,7 @@
               %tr{:id => "tenant_#{tenant[:id]}", :'data-parent' => "#tenant_#{tenant[:parent]}"}
                 %td.treegrid-node
                   = h(tenant[:name])
+                  = 'abc'
                 %td
                   - options = @edit[:cb_rates].invert.sort
                   = select_tag("#{@edit[:new][:cbshow_typ]}__#{tenant[:id]}",

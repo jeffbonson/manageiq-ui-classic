@@ -19,6 +19,8 @@ const CustomButtonForm = ({
     isLoading: !!recId,
   });
 
+  console.log('roles=', roles);
+
   let iconChanged = false;
   const distinctInstancesOptions = distinctInstances.map((instance) => ({ value: instance, label: instance }));
   const ansiblePlaybookOptions = ansiblePlaybooks.map((playbook) => ({ value: playbook.name, label: playbook.name }));

@@ -146,4 +146,8 @@ module ReportHelper
          :group_description => User.current_user.current_group.description}
     end
   end
+
+  def widget_form()
+    react('WidgetForm', {:reportMenu => session[:report_menu]})
+  end
 end

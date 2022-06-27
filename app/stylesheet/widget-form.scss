@@ -1,0 +1,32 @@
+.widget-form-wrapper {
+
+	.bx--list-box__wrapper{
+		margin-bottom: 2rem !important;
+	}
+
+  .grouped-items {
+    display: flex;
+
+    &.column-items {
+      flex-direction: column;
+
+			& > div {
+				margin-bottom: 2rem;
+			}
+    }
+
+    &.row-items {
+      flex-direction: row;
+      justify-content: space-between;
+
+      & > div {
+        flex: 1;
+        margin-left: 5px;
+      }
+
+      & > div:first-child {
+        margin-left: 0;
+      }
+    }
+  }
+}

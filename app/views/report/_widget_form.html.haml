@@ -1,3 +1,6 @@
+%div
+  = @edit[:new].inspect
+= widget_form()
 - url = url_for_only_path(:action => 'widget_form_field_changed', :id => (@widget.id || "new"))
 #form_div
   = render :partial => "layouts/flash_msg"

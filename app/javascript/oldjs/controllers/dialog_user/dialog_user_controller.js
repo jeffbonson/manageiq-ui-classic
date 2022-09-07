@@ -3,6 +3,11 @@ ManageIQ.angular.app.controller('dialogUserController', ['API', 'dialogFieldRefr
 
   vm.$onInit = function() {
     var apiCall = new Promise(function(resolve) {
+      console.log(dialogId);
+      console.log(resourceActionId);
+      console.log(targetId);
+      console.log(targetType);
+
       var url = '/api/service_dialogs/' + dialogId +
         '?resource_action_id=' + resourceActionId +
         '&target_id=' + targetId +
@@ -18,6 +23,7 @@ ManageIQ.angular.app.controller('dialogUserController', ['API', 'dialogFieldRefr
     vm.dialog = dialog.content[0];
     vm.dialogLoaded = true;
 
+    console.log(vm.dialog);
     _.forEach(vm.dialog.dialog_tabs, function(tab) {
       _.forEach(tab.dialog_groups, function(group) {
         _.forEach(group.dialog_fields, function(field) {
@@ -49,6 +55,10 @@ ManageIQ.angular.app.controller('dialogUserController', ['API', 'dialogFieldRefr
   vm.isValid = false;
 
   function refreshField(field) {
+    console.log(field);
+    // API.post(field.href).then((data) => {
+    //   console.log(data);
+    // });
     var idList = {
       dialogId: dialogId,
       resourceActionId: resourceActionId,
@@ -67,7 +77,7 @@ ManageIQ.angular.app.controller('dialogUserController', ['API', 'dialogFieldRefr
 
   function submitButtonClicked() {
     vm.dialogData.action = apiAction;
-    miqService.sparkleOn();
+    // miqService.sparkleOn();
 
     var apiData = DialogData.outputConversion(vm.dialogData);
     if (apiSubmitEndpoint.match(/generic_objects/)) {
@@ -76,12 +86,17 @@ ManageIQ.angular.app.controller('dialogUserController', ['API', 'dialogFieldRefr
       apiData = {action: apiAction, resource: _.omit(apiData, 'action')};
     }
 
+    console.log(apiData);
+    console.log(vm.dialogData);
+    console.log(DialogData);
+    console.log(apiSubmitEndpoint);
     return API.post(apiSubmitEndpoint, apiData, {skipErrors: [400]})
       .then(function(response) {
-
+        console.log(openUrl);
         if (vm.openUrl === 'true') {
           return API.wait_for_task(response.task_id)
             .then(function() {
+              console.log(API.wait_for_task(response.task_id));
               return $http.post('open_url_after_dialog', {targetId: vm.targetId, realTargetType: realTargetType});
             })
             .then(function(response) {

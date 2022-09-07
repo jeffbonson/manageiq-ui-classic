@@ -380,6 +380,7 @@
   width: fit-content;
 }
 
+
 .miq-fieldset {
   border: 0;
   margin: 0;
@@ -406,5 +407,35 @@
     flex-direction: row;
     margin-top: -23px;
     flex-grow: 1;
+  }
+}
+
+#order-service-form {
+
+  .order-form-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+
+    div:first-child {
+      flex-grow: 1;
+    }
+
+    .refresh-button {
+      margin-top: 20px;
+    }
+
+  }
+  .bx--btn--primary {
+    margin-right: 10px;
+  }
+
+  .bx--form-item {
+    padding-bottom: 2rem;
+  }
+
+  .bx--list-box__wrapper {
+    padding-bottom: 2rem;
   }
 }

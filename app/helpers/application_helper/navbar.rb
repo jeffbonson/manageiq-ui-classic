@@ -26,6 +26,7 @@ module ApplicationHelper
     # to identify the active menu item here.
     def item_active?(item)
       if item.leaf?
+        puts "item=== #{item}"
         # FIXME: remove @layout condition when every controller sets menu_section properly
         active = controller.menu_section_id(controller.params) || @layout.to_sym
         item.id.to_sym == active || item.id.to_sym == @layout.to_sym

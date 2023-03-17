@@ -17,6 +17,10 @@ AnsiblePlaybookController:
 - index
 - report_data
 - search_clear
+AutomatedWorkflowController:
+- show_list
+- report_data
+- index
 AnsibleRepositoryController:
 - index
 - report_data

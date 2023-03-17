@@ -1850,6 +1850,12 @@ Rails.application.routes.draw do
         save_post
     },
 
+    :automated_workflow => {
+      :get => %w(
+        show_list
+      ),
+    },
+
     :ansible_credential => {
       :get => %w(
         download_data

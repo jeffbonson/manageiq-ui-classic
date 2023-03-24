@@ -21,6 +21,7 @@ AutomatedWorkflowController:
 - show_list
 - report_data
 - index
+- show
 AnsibleRepositoryController:
 - index
 - report_data

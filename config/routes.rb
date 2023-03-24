@@ -1853,6 +1853,7 @@ Rails.application.routes.draw do
     :automated_workflow => {
       :get => %w(
         show_list
+        show
       ),
     },
 

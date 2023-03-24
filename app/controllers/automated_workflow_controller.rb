@@ -21,7 +21,7 @@ class AutomatedWorkflowController < ApplicationController
 
   def show
     assert_privileges('automated_workflow_workflows_view')
-    super
+    #super
   end
 
   def breadcrumbs_options

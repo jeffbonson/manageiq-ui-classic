@@ -60,7 +60,7 @@ const summary = (recordId) => ([
   { label: __('Default'), value: 'false' },
 ]);
 
-export const jsonData = `        {
+export const jsonData = ` {
   "Comment": "An example of the Amazon States Language using a choice state.",
   "StartAt": "FirstState",
   "States": {
@@ -148,8 +148,7 @@ export const jsonData = `        {
       "End": true
     }
   }
-}
-`;
+}`;
 
 export const automatedWorkflowData = (recordId) => (
   {

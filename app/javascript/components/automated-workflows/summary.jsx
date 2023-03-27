@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import {
   Loading, Tabs, Tab, CodeSnippet,
 } from 'carbon-components-react';
+import AWSSfnGraph from '@tshepomgaga/aws-sfn-graph';
 import MiqStructuredList from '../miq-structured-list';
 import { automatedWorkflowData } from './automated-workflows-dummy-data';
+import '@tshepomgaga/aws-sfn-graph/index.css';
 
 const AutomatedWorkflowSummary = ({ recordId }) => {
   const tabLabels = [
@@ -50,14 +52,24 @@ const AutomatedWorkflowSummary = ({ recordId }) => {
   };
 
   /** Function to render the code snipper component */
-  const renderCodeSnippet = () => (
-    <CodeSnippet type="multi">
-      {data.jsonData}
-    </CodeSnippet>
-  );
+  const renderCodeSnippet = () => {
+    console.log(data.jsonData);
+    return (
+      <CodeSnippet type="multi">
+        {data.jsonData}
+      </CodeSnippet>
+    );
+  };
 
   /** Function to render the graph. */
-  const renderGraph = () => (<div>Graph will be rendered here</div>);
+  const renderGraph = () => (
+    <AWSSfnGraph
+      data={data.jsonData}
+      width={500}
+      height={500}
+      onError={(error) => console.log('error information', error)}
+    />
+  );
 
   /** Function to render various tab contents based on selected tab. */
   const renderTabContents = () => {

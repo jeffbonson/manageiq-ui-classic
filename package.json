@@ -1,7 +1,7 @@
 {
   "name": "manageiq-ui-classic",
   "version": "1.0.0",
-  "description": "ManageIQ Cloud Management Platform",
+  "description": "ManageIQ Cloud Management Platform ",
   "main": "index.js",
   "browserslist": [
     "> 3%",

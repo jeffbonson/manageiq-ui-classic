@@ -28,7 +28,7 @@ class AutomatedWorkflowController < ApplicationController
     {
       :breadcrumbs => [
         {:title => _("Automation")},
-        {:title => _("Automated Workflow")},
+        {:title => _("Embedded Workflow")},
         {:title => _("Workflows"), :url => controller_url},
       ],
     }

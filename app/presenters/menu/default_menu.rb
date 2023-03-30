@@ -211,7 +211,7 @@ module Menu
       end
 
       def workflow_menu_section
-        Menu::Section.new(:automated_workflow, N_("Automated Workflow"), nil, [
+        Menu::Section.new(:automated_workflow, N_("Embedded Workflow"), nil, [
           Menu::Item.new('automated_workflow_workflows', N_('Workflows'), 'automated_workflow_workflows', {:feature => 'automated_workflow_workflows_view', :any => true}, '/automated_workflow/show_list'),
           Menu::Item.new('automated_workflow_repositories', N_('Repositories'), 'automated_workflow_repositories', {:feature => 'automated_workflow_repositories', :any => true}, '/ansible_repository/show_list'),
           Menu::Item.new('automated_workflow_credentials', N_('Credentials'), 'automated_workflow_credentials', {:feature => 'automated_workflow_credentials', :any => true}, '/ansible_credential/show_list'),

@@ -41,7 +41,7 @@ const rowInfo = (headers) => {
   return miqRows.rowItems;
 };
 
-/** Function to return the dummy data for automated workflows
+/** Function to return the dummy data for aEmbedded workflows
  * This data is used in data table list.
 */
 export const automatedWorkflowsList = () => {

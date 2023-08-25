@@ -1,4 +1,15 @@
 import { componentTypes, validatorTypes } from '@@ddf';
+import {
+  buildTextBox,
+  buildTextAreaBox,
+  buildCheckBox,
+  buildDropDownList,
+  buildTagControl,
+  buildDateControl,
+  buildTimeControl,
+  buildRadioButtons,
+  buildRefreshButton,
+} from './fields.schema';
 
 const dates = [];
 const showPastDates = [];
@@ -7,240 +18,8 @@ const checkBoxes = [];
 let hasTime = false;
 let stopSubmit = false;
 let invalidDateFields = [];
-const dynamicFields = [];
-const refreshFields = [];
 
-const buildTextBox = (field, validate) => {
-  let component = {};
-  console.log(field);
-  //   if (field.dialog_field_responders.length > 0) {
-  //     field.dialog_field_responders.forEach((tempField) => {
-  //       console.log(tempField);
-  //       dynamicFields.forEach((fieldToRefresh) => {
-  //         if (fieldToRefresh.field === tempField) {
-  //           console.log(fieldToRefresh);
-  //         }
-  //       });
-  //     });
-  //   }
-
-  if (field.options.protected) {
-    component = {
-      component: 'password-field',
-      id: field.id,
-      name: field.name,
-      label: field.label,
-      hideField: !field.visible,
-      isRequired: field.required,
-      isDisabled: field.read_only,
-      initialValue: field.default_value,
-      description: field.description,
-      validate,
-    };
-  } else {
-    component = {
-      component: componentTypes.TEXT_FIELD,
-      id: field.id,
-      name: field.name,
-      label: field.label,
-      hideField: !field.visible,
-      isRequired: field.required,
-      isDisabled: field.read_only,
-      initialValue: field.default_value,
-      description: field.description,
-      validate,
-    //   resolveProps: (props, { meta, input }, formOptions) => {
-    //     console.log(props);
-    //     console.log(meta);
-    //     console.log(input);
-    //     console.log(formOptions);
-    //     if (!formOptions.pristine) {
-    //       if (field.dialog_field_responders.length > 0) {
-    //         field.dialog_field_responders.forEach((tempField) => {
-    //           console.log(tempField);
-    //           dynamicFields.forEach((fieldToRefresh) => {
-    //             if (fieldToRefresh.field === tempField) {
-    //               const refreshData = {
-    //                 action: 'refresh_dialog_fields',
-    //                 resource: {
-    //                   dialog_fields: {
-    //                     //   credential: null,
-    //                     hosts: 'localhost0',
-    //                     //   param_provider_id: '38',
-    //                     //   param_miq_username: 'admin',
-    //                     //   param_miq_password: 'smartvm',
-    //                     //   check_box_1: 't',
-    //                     //   dropdown_list_1_1: null,
-    //                     //   textarea_box_1: '',
-    //                     //   date_time_control_1: '2022-10-12T20:50:45.180Z',
-    //                     //   date_time_control_2: '2022-10-12T20:50:45.180Z',
-    //                     //   date_control_1: '2022-10-12',
-    //                     //   date_control_2_1: '2022-09-27',
-    //                   },
-    //                   fields: ['credential'],
-    //                   resource_action_id: '2018',
-    //                   target_id: '14',
-    //                   target_type: 'service_template',
-    //                   real_target_type: 'ServiceTemplate',
-    //                 },
-    //               };
-    //               fieldToRefresh.values = API.post(`/api/service_dialogs/10`, refreshData).then((data) => {
-    //                 console.log(data);
-    //               });
-    //               console.log(fieldToRefresh);
-    //             }
-    //           });
-    //         });
-    //       }
-    //     }
-    //   },
-    };
-  }
-  return component;
-};
-
-const onRefreshField = (recordId, field, initialData , data) => {
-
-  const params = {
-    action: 'refresh_dialog_fields',
-    resource: {
-      // dialog_fields: fields,
-      fields: [field.name],
-      resource_action_id: initialData.resourceActionId,
-      target_id: initialData.targetId,
-      target_type: initialData.targetType,
-      real_target_type: initialData.realTargetType,
-    },
-  };
-
-  API.post(`/api/service_dialogs/${recordId}`, params).then((response) => {
-    console.log(response)
-    console.log(data)
-  });
-}
-
-const buildRefreshButton = (recordId, field, initialData, data, setState) => ({
-  component: 'refresh-button',
-  id:  `refresh_${field.id}`,
-  name: `refresh_${field.name}`,
-  label: 'Refresh',
-  hideField: !field.visible,
-  className: 'refresh-button',
-  onRefresh: () => onRefreshField(recordId, field, initialData, data)
-});
-
-const buildTextAreaBox = (field, validate) => ({
-  component: componentTypes.TEXTAREA,
-  id: field.id,
-  name: field.name,
-  label: field.label,
-  hideField: !field.visible,
-  isRequired: field.required,
-  isDisabled: field.read_only,
-  initialValue: field.default_value,
-  description: field.description,
-  validate,
-});
-
-const buildCheckBox = (field, validate) => ({
-  component: componentTypes.CHECKBOX,
-  id: field.id,
-  name: field.name,
-  label: field.label,
-  hideField: !field.visible,
-  isRequired: field.required,
-  isDisabled: field.read_only,
-  initialValue: field.default_value,
-  description: field.description,
-  validate,
-});
-
-const buildDropDownList = (field, validate) => {
-  let options = [];
-  let placeholder = __('<Choose>');
-  let start;
-
-  field.values.forEach((value) => {
-    if (value[0] === null) {
-      value[0] = null;
-      // eslint-disable-next-line prefer-destructuring
-      placeholder = value[1];
-    }
-    options.push({ value: value[0] !== null ? String(value[0]) : null, label: value[1] });
-  });
-
-//   if (field.dynamic) {
-//     dynamicFields.push({ field: field.name, id: field.id, values: options });
-//     console.log(dynamicFields);
-//   }
-
-  if (options[0].value === null) {
-    start = options.shift();
-  }
-  options = options.sort((option1, option2) => {
-    if (field.options.sort_by === 'description') {
-      if (field.options.sort_order === 'ascending') {
-        return option1.label.localeCompare(option2.label);
-      }
-      return option2.label.localeCompare(option1.label);
-    }
-    if (field.options.sort_order === 'ascending') {
-      return option1.value.localeCompare(option2.value);
-    }
-    return option2.value.localeCompare(option1.value);
-  });
-  if (start) {
-    options.unshift(start);
-  }
-
-  let isMulti = false;
-  if (field.options && field.options.force_multi_value) {
-    isMulti = true;
-  }
-  return {
-    component: componentTypes.SELECT,
-    id: field.id,
-    name: field.name,
-    label: field.label,
-    hideField: !field.visible,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: field.default_value,
-    description: field.description,
-    validate,
-    options,
-    placeholder,
-    isSearchable: true,
-    simpleValue: true,
-    isMulti,
-    sortItems: (items) => items,
-  };
-};
-
-const buildTagControl = (field, validate) => {
-  const options = [];
-  field.values.forEach((value) => {
-    if (!value.id) {
-      value.id = '-1';
-    }
-    options.push({ value: value.id, label: value.description });
-  });
-  return {
-    component: componentTypes.SELECT,
-    id: field.id,
-    name: field.name,
-    label: field.label,
-    hideField: !field.visible,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: field.default_value,
-    description: field.description,
-    validate,
-    options,
-  };
-};
-
-const buildDateControl = (field, validate) => {
+const formatDateControl = (field) => {
   dates.push(field.name);
   if (field.default_value === '' || !field.default_value) {
     const today = new Date();
@@ -251,21 +30,9 @@ const buildDateControl = (field, validate) => {
   } else {
     showPastDatesFieldErrors.push({ name: field.name, label: field.label });
   }
-  return {
-    component: componentTypes.DATE_PICKER,
-    id: field.id,
-    name: field.name,
-    label: field.label,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: field.default_value,
-    description: field.description,
-    validate,
-    variant: 'date-time',
-  };
 };
 
-const buildTimeControl = (field, validate) => {
+const formatTimeControl = (field) => {
   let newDate = '';
   hasTime = true;
   if (field.default_value === '' || !field.default_value) {
@@ -279,58 +46,18 @@ const buildTimeControl = (field, validate) => {
   } else {
     showPastDatesFieldErrors.push({ name: field.name, label: field.label });
   }
-  return [{
-    component: componentTypes.DATE_PICKER,
-    id: field.id,
-    name: field.name,
-    label: field.label,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: newDate.toISOString(),
-    description: field.description,
-    validate,
-    variant: 'date-time',
-  },
-  {
-    component: componentTypes.TIME_PICKER,
-    id: `${field.id}-time`,
-    name: `${field.name}-time`,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: newDate,
-    validate,
-    twelveHoursFormat: true,
-    pattern: '(0?[1-9]|1[0-2]):[0-5][0-9]',
-  }];
+  return newDate;
 };
 
-const buildRadioButtons = (field, validate) => {
-  const options = [];
-  field.values.forEach((value) => {
-    options.push({ value: value[0], label: value[1] });
-  });
-  return {
-    component: componentTypes.RADIO,
-    id: field.id,
-    name: field.name,
-    label: field.label,
-    isRequired: field.required,
-    isDisabled: field.read_only,
-    initialValue: field.default_value,
-    description: field.description,
-    validate,
-    options,
-  };
-};
-
-export const buildFields = (data, setState, initialData) => {
+/** Function to build the form fields. */
+export const buildFields = (response, setState, initialData) => {
   const dialogTabs = [];
   let dialogSubForms = [];
   let dialogFields = [];
 
-  data.content[0].dialog_tabs.forEach((tab) => {
-    tab.dialog_groups.forEach((group) => {
-      group.dialog_fields.forEach((field) => {
+  response.content[0].dialog_tabs.forEach((tab, tabIndex) => {
+    tab.dialog_groups.forEach((group, groupIndex) => {
+      group.dialog_fields.forEach((field, fieldIndex) => {
         const validate = [];
         if (field.validator_rule) {
           if (field.validator_message) {
@@ -353,9 +80,9 @@ export const buildFields = (data, setState, initialData) => {
         }
         let component = {};
         if (field.type === 'DialogFieldTextBox') {
-          component = buildTextBox(field, validate);
+          component = buildTextBox(field, validate, setState);
         }
-        
+
         if (field.type === 'DialogFieldTextAreaBox') {
           component = buildTextAreaBox(field, validate);
         }
@@ -370,34 +97,33 @@ export const buildFields = (data, setState, initialData) => {
           component = buildTagControl(field, validate);
         }
         if (field.type === 'DialogFieldDateControl') {
+          formatDateControl(field);
           component = buildDateControl(field, validate);
         }
         if (field.type === 'DialogFieldDateTimeControl') {
-          component = buildTimeControl(field, validate);
+          const dateTime = formatTimeControl(field);
+          component = buildTimeControl(field, validate, dateTime);
         }
         if (field.type === 'DialogFieldRadioButton') {
           component = buildRadioButtons(field, validate);
         }
-        let formItems = [component]
-        
-        if (field.show_refresh_button) {
-          formItems.push(buildRefreshButton(data.id, field, initialData, data, setState))
-        }
-        dialogFields.push(formItems);
-        
+        const rowItems = [component];
+        const fieldPosition = { tabIndex, groupIndex, fieldIndex };
+        rowItems.push(buildRefreshButton(response.id, field, initialData, setState, fieldPosition));
+        dialogFields.push(rowItems);
+
         // For each field get: type, required, read_only, label, name, default_value, description (tooltip)
       });
-      
+
       const formRow = (componentItem, index) => ({
         component: componentTypes.SUB_FORM,
-        id: group.id.toString() + '_row',
+        id: `${group.id.toString()}_row`,
         name: group.label,
         fields: componentItem,
         className: 'order-form-row',
         key: index,
       });
 
-      console.log('dialogFields=', dialogFields)
       const subForm = {
         component: componentTypes.SUB_FORM,
         id: group.id,
@@ -427,6 +153,7 @@ export const buildFields = (data, setState, initialData) => {
   });
 };
 
+/** Function to reformat the dates. */
 const datePassed = (selectedDate) => {
   const userDate = new Date(selectedDate);
   const today = new Date();
@@ -441,6 +168,7 @@ const datePassed = (selectedDate) => {
   return false;
 };
 
+/** Function to handle the time picker format on submit. */
 const handleTimePickerSubmit = (submitData) => {
   let tempSubmitData;
   // Loop through fields to check for time fields
@@ -479,6 +207,7 @@ const handleTimePickerSubmit = (submitData) => {
   return tempSubmitData;
 };
 
+/** Function to handle the date picker format on submit. */
 const handleDatePickerSubmit = (submitData) => {
   Object.entries(submitData).forEach((field) => {
     const fieldName = field[0];
@@ -510,6 +239,7 @@ const handleDatePickerSubmit = (submitData) => {
   });
 };
 
+/** Function to handle the checkbox data format on submit. */
 const handleCheckboxSubmit = (submitData) => {
   Object.entries(submitData).forEach((field) => {
     const fieldName = field[0];
@@ -526,6 +256,7 @@ const handleCheckboxSubmit = (submitData) => {
   });
 };
 
+/** Function to handle the form data on form submit. */
 export const prepareSubmitData = (values, setShowDateError) => {
   let submitData = { action: 'order', ...values };
   stopSubmit = false;

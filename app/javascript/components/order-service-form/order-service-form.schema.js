@@ -12,7 +12,6 @@ const showDateErrorFields = (fields) => {
   return invalidFields;
 };
 
-
 const createSchema = (fields, showDateError) => {
   console.log('schema fields=', fields);
   return ({

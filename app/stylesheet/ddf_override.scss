@@ -417,6 +417,7 @@
     flex-direction: row;
     gap: 10px;
     align-items: flex-start;
+    margin-bottom: 2rem;
 
     div:first-child {
       flex-grow: 1;
@@ -424,6 +425,7 @@
 
     .refresh-button {
       margin-top: 20px;
+      margin-right: 0;
     }
 
   }
@@ -431,11 +433,11 @@
     margin-right: 10px;
   }
 
-  .bx--form-item {
-    padding-bottom: 2rem;
+  .refreshSpinner {
+   margin-top: 35px;
   }
 
   .bx--list-box__wrapper {
-    padding-bottom: 2rem;
+    margin-bottom: 0;
   }
 }

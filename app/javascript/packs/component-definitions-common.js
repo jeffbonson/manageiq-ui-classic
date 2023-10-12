@@ -35,6 +35,7 @@ import CopyDashboardForm from '../components/copy-dashboard-form/copy-dashboard-
 import DashboardWidget from '../components/dashboard-widgets/dashboard-charts';
 import Datastore from '../components/data-tables/datastore';
 import DatastoreForm from '../components/data-store-form';
+import DataTableTree from '../components/data-table-tree';
 import DbList from '../components/data-tables/db-list';
 import DiagnosticsCollectLogForm from '../components/diagnostics-collect-log-form';
 import ReconfigureTable from '../components/reconfigure-vm-form/reconfigure-table';
@@ -202,6 +203,7 @@ ManageIQ.component.addReact('CopyDashboardForm', CopyDashboardForm);
 ManageIQ.component.addReact('DashboardWidget', DashboardWidget);
 ManageIQ.component.addReact('Datastore', Datastore);
 ManageIQ.component.addReact('DatastoreForm', DatastoreForm);
+ManageIQ.component.addReact('DataTableTree', DataTableTree);
 ManageIQ.component.addReact('DbList', DbList);
 ManageIQ.component.addReact('DiagnosticsCollectLogForm', DiagnosticsCollectLogForm);
 ManageIQ.component.addReact('ReconfigureTable', ReconfigureTable);

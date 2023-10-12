@@ -55,6 +55,7 @@
     - if @edit[:new][:cbshow_typ] == "tenant"
       %h3
         = _('Selections')
+      = react('DataTableTree', { :data => @edit[:cb_assign][:hierarchy].sort_by(&:first)})
       %table.table.table-bordered.table-hover.table-treegrid
         %thead
           %tr

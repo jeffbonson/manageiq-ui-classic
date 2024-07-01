@@ -2,6 +2,9 @@ import { DIALOG_FIELD_TYPES } from './constants';
 
 class ServiceValidator {
   static validateField(data) {
+    if (!data.isOrderServiceForm) {
+      return ({ valid: true, value: data.value });
+    }
     const {
       checkBox, date, dateTime, dropDown, radio, tag, textBox, textArea,
     } = DIALOG_FIELD_TYPES;

@@ -4,32 +4,36 @@ import { Loading } from 'carbon-components-react';
 import DialogTabs from './DialogTabs';
 import ServiceContext from './ServiceContext';
 import ServiceButtons from './ServiceButtons';
-import './order-service-form.style.scss';
 import { fetchInitialData, refreshFieldData } from './helper';
 import { RefreshStatus, ServiceType } from './constants';
+import './services.style.scss';
 
 /** Function to render the Loader during initial API call. */
 const renderLoader = () => <div className="loadingSpinner"><Loading active small withOverlay={false} className="loading" /></div>;
 
 /** Component to render -
- * 1. OrderServiceForm */
-const Service = ({ initialData, serviceType }) => {
-  const {
-    dialogId, resourceActionId, targetId, targetType, apiSubmitEndpoint, apiAction, openUrl, realTargetType, finishSubmitEndpoint,
-  } = initialData;
-  const url = `/api/service_dialogs/${dialogId}?resource_action_id=${resourceActionId}&target_id=${targetId}&target_type=${targetType}`;
-  const resource = {
-    resource_action_id: resourceActionId,
-    target_id: targetId,
-    target_type: targetType,
-    real_target_type: realTargetType,
-  };
+ * 1. Order Service Form
+ * 2. Service Dialogs
+ * */
+const Service = ({ initialData: { dialogId, params, urls }, serviceType }) => {
+  const isOrderServiceForm = serviceType === ServiceType.order;
+  let resource;
+  if (isOrderServiceForm) {
+    resource = {
+      resource_action_id: params.resourceActionId,
+      target_id: params.targetId,
+      target_type: params.targetType,
+      real_target_type: params.realTargetType,
+    };
+  }
 
   const [data, setData] = useState({
     isLoading: true,
     apiResponse: undefined,
     fieldsToRefresh: [],
     dialogFields: undefined,
+    urls,
+    isOrderServiceForm,
   });
 
   const refreshStatus = useRef(RefreshStatus.notStarted);
@@ -55,13 +59,18 @@ const Service = ({ initialData, serviceType }) => {
   };
 
   useEffect(() => {
-    fetchInitialData(url)
-      .then((initialData) => setData((prevData) => ({ ...prevData, ...initialData })))
+    let url = `/api/service_dialogs/${dialogId}`;
+    if (isOrderServiceForm) {
+      const urlParams = `?resource_action_id=${params.resourceActionId}&target_id=${params.targetId}&target_type=${params.targetType}`;
+      url = `/api/service_dialogs/${dialogId}${urlParams}`;
+    }
+    fetchInitialData(url, isOrderServiceForm)
+      .then((response) => setData((prevData) => ({ ...prevData, ...response })))
       .catch(() => setData((prevData) => ({ ...prevData, isLoading: false })));
   }, []);
 
   useEffect(() => {
-    if (data.dialogFields) {
+    if (isOrderServiceForm && data.dialogFields) {
       if (data.fieldsToRefresh.length > 0) {
         refreshField({ ...data });
       } else if (refreshStatus.current !== RefreshStatus.notStarted) {
@@ -74,12 +83,12 @@ const Service = ({ initialData, serviceType }) => {
   const renderContent = () => (
     <ServiceContext.Provider value={{ data, setData }}>
       <DialogTabs />
-      {serviceType === ServiceType.order && <ServiceButtons />}
+      {isOrderServiceForm && <ServiceButtons />}
     </ServiceContext.Provider>
   );
 
   return (
-    <div className="order-service-form-container">
+    <div className="service-container">
       { data.isLoading ? renderLoader() : renderContent() }
     </div>
 
@@ -88,16 +97,20 @@ const Service = ({ initialData, serviceType }) => {
 
 Service.propTypes = {
   initialData: PropTypes.shape({
-    apiSubmitEndpoint: PropTypes.string.isRequired,
-    apiAction: PropTypes.string.isRequired,
-    cancelEndPoint: PropTypes.string.isRequired,
     dialogId: PropTypes.number.isRequired,
-    finishSubmitEndpoint: PropTypes.string.isRequired,
-    openUrl: PropTypes.bool.isRequired,
-    resourceActionId: PropTypes.number.isRequired,
-    realTargetType: PropTypes.string.isRequired,
-    targetId: PropTypes.number.isRequired,
-    targetType: PropTypes.string.isRequired,
+    params: PropTypes.shape({
+      resourceActionId: PropTypes.number,
+      targetId: PropTypes.number,
+      targetType: PropTypes.string,
+      realTargetType: PropTypes.string,
+    }),
+    urls: PropTypes.shape({
+      apiSubmitEndpoint: PropTypes.string.isRequired,
+      apiAction: PropTypes.string.isRequired,
+      cancelEndPoint: PropTypes.string.isRequired,
+      finishSubmitEndpoint: PropTypes.string.isRequired,
+      openUrl: PropTypes.bool.isRequired,
+    }),
   }).isRequired,
   serviceType: PropTypes.string.isRequired,
 };

@@ -12,19 +12,21 @@ const CheckboxField = ({ field }) => {
   const fieldData = data.dialogFields[field.name];
 
   const onChange = (checked) => {
-    const { valid, value } = ServiceValidator.validateField({ value: checked, field });
-    data.dialogFields[field.name] = { value, valid };
-    setData({
-      ...data,
-      dialogFields: { ...data.dialogFields },
-      fieldsToRefresh: field.dialog_field_responders,
-    });
+    if (data.isOrderServiceForm) {
+      const { valid, value } = ServiceValidator.validateField({ value: checked, field, isOrderServiceForm: data.isOrderServiceForm });
+      data.dialogFields[field.name] = { value, valid };
+      setData({
+        ...data,
+        dialogFields: { ...data.dialogFields },
+        fieldsToRefresh: field.dialog_field_responders,
+      });
+    }
   };
 
   return (
     <div className="field-checkbox">
       <Checkbox
-        disabled={!!data.fieldsToRefresh.length > 0}
+        disabled={!data.isOrderServiceForm || !!data.fieldsToRefresh.length > 0}
         id={fieldComponentId(field)}
         labelText={<FieldLabel field={field} />}
         onChange={(checked) => onChange(checked)}

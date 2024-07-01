@@ -12,13 +12,20 @@ const SimpleDropDownField = ({ field, options }) => {
   const fieldData = data.dialogFields[field.name];
 
   const onChange = ({ selectedItem }) => {
-    const { valid, value } = ServiceValidator.validateField({ value: selectedItem, field });
+    const { valid, value } = ServiceValidator.validateField({ value: selectedItem, field, isOrderServiceForm: data.isOrderServiceForm });
     data.dialogFields[field.name] = { value, valid };
-    setData({
-      ...data,
-      dialogFields: { ...data.dialogFields },
-      fieldsToRefresh: field.dialog_field_responders,
-    });
+    if (data.isOrderServiceForm) {
+      setData({
+        ...data,
+        dialogFields: { ...data.dialogFields },
+        fieldsToRefresh: field.dialog_field_responders,
+      });
+    } else {
+      setData({
+        ...data,
+        dialogFields: { ...data.dialogFields },
+      });
+    }
   };
 
   return (

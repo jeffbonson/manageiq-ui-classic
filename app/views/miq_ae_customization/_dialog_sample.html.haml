@@ -1,5 +1,6 @@
 -# if dialogs is selected
-= react('ServiceDialog', {:recordId => @record.id, :from => 'customization'})
+=# react('ServiceDialog', {:recordId => @record.id, :from => 'customization'})
+= react('Service', :initialData => {:dialogId => @record.id}, :serviceType => "serviceDialog")
 .row
   .col-md-12.col-lg-12
     #dialog_tabs

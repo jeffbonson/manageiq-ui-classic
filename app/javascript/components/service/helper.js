@@ -25,7 +25,7 @@ export const defaultFieldValue = (field) => {
     } else if (field.type === DIALOG_FIELD_TYPES.checkBox) {
       defaultValue = false;
     } else {
-      defaultValue = '';
+      defaultValue = field.default_value;
     }
   } if (Array.isArray(field.default_value)) {
     defaultValue = field.default_value || [];
@@ -36,17 +36,18 @@ export const defaultFieldValue = (field) => {
 };
 
 /** Function to build the dialog fields data after initial api call. */
-const buildDialogFields = (apiResponse) => {
+const buildDialogFields = (apiResponse, isOrderServiceForm) => {
   const dialogFields = {};
   const tabs = extractDialogTabs(apiResponse);
   tabs.forEach((tab) => {
     tab.dialog_groups.forEach((group) => {
       group.dialog_fields.forEach((field) => {
-        const { value, valid } = ServiceValidator.validateField({ field, value: defaultFieldValue(field) });
+        const { value, valid } = ServiceValidator.validateField({ field, value: defaultFieldValue(field), isOrderServiceForm });
         dialogFields[field.name] = { value, valid };
       });
     });
   });
+  console.log(dialogFields);
   return dialogFields;
 };
 
@@ -85,13 +86,13 @@ const updateRefreshResponse = (apiResponse, currentRefreshField, result) => {
 };
 
 /** Function to fetch initial API data. */
-export const fetchInitialData = async(url) => {
+export const fetchInitialData = async(url, isOrderServiceForm) => {
   try {
     const apiResponse = await API.get(url, { skipErrors: [500] });
     return {
       isLoading: false,
       apiResponse,
-      dialogFields: buildDialogFields(apiResponse),
+      dialogFields: buildDialogFields(apiResponse, isOrderServiceForm),
     };
   } catch {
     console.error('Unexpected error occurred while fetching the data.');
@@ -119,4 +120,23 @@ export const refreshFieldData = async(newData, resource) => {
     console.error('Unexpected error occurred when the field was refreshed.');
     throw _error;
   }
+};
+
+export const currentDateTime = () => {
+  const hours = [...Array(24)].map((_, hour) => ({ id: hour, text: hour.toString() }));
+  const minutes = [...Array(60)].map((_, min) => ({ id: min, text: min.toString() }));
+
+  const now = new Date();
+  const currentHour = hours.find((hour) => hour.id === now.getHours());
+  const currentMinute = minutes.find((min) => min.id === now.getMinutes());
+
+  const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(now.getDate()).padStart(2, '0');
+  const year = now.getFullYear();
+
+  const currentDate = `${month}/${day}/${year}`;
+  console.log({ hours, minutes, currentHour, currentMinute, currentDate });
+  return {
+    hours, minutes, currentHour, currentMinute, currentDate,
+  };
 };

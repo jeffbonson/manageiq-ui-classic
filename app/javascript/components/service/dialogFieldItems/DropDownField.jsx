@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import MultiDropDownField from './MultiDropDownField';
-import SimpleDropDownField from './SimpleDropDownField';
+import MultiDropDownField from './DropDowns/MultiDropDownField';
+import SimpleDropDownField from './DropDowns/SimpleDropDownField';
+import ServiceContext from '../ServiceContext';
 
 /** Component to render the DropDownField in the Service/DialogTabs/DialogGroups/DialogFields component */
 const DropDownField = ({ field }) => {
+  const { data } = useContext(ServiceContext);
   const isMulti = !!(field.options && field.options.force_multi_value);
-  const options = field.values ? field.values.map((item) => ({ id: item[0], text: item[1] })) : [];
+
+  let options = [['1', 'Option1'], ['2', 'Option2']].map((item) => ({ id: item[0], text: item[1] }));
+  if (data.isOrderServiceForm) {
+    options = field.values ? field.values.map((item) => ({ id: item[0], text: item[1] })) : [];
+  }
+
   return (
     <>
       {
@@ -27,6 +34,7 @@ DropDownField.propTypes = {
     default_value: PropTypes.string,
     label: PropTypes.string.isRequired,
     name: PropTypes.string,
+    type: PropTypes.string,
     values: PropTypes.arrayOf(PropTypes.any),
     required: PropTypes.bool,
   }).isRequired,

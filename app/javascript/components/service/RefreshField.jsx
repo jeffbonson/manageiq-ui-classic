@@ -23,7 +23,7 @@ const RefreshField = ({ field }) => {
         !!(field.dynamic && field.show_refresh_button) && !inProgress && (
           <Button
             hasIconOnly
-            disabled={!!data.fieldsToRefresh.length > 0}
+            disabled={!data.isOrderServiceForm || !!data.fieldsToRefresh.length > 0}
             className="refresh-field-button"
             onClick={() => {
               setData({

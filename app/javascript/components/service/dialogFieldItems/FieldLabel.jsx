@@ -22,7 +22,7 @@ const getFieldLabelContent = (field, data) => {
   }
   return (
     <>
-      {field.required && <span className="field-required">*</span>}
+      {data.isOrderServiceForm && field.required && <span className="field-required">*</span>}
       {field.label}
       {getTooltip(field.description)}
     </>

@@ -13,17 +13,19 @@ const TextInputField = ({ field }) => {
   const fieldData = data.dialogFields[field.name];
 
   const onChange = (event) => {
-    const { valid, value } = ServiceValidator.validateField({ value: event.target.value, field });
-    data.dialogFields[field.name] = { value, valid };
-    setData({
-      ...data,
-      dialogFields: { ...data.dialogFields },
-      fieldsToRefresh: field.dialog_field_responders,
-    });
+    if (data.isOrderServiceForm) {
+      const { valid, value } = ServiceValidator.validateField({ value: event.target.value, field, isOrderServiceForm: data.isOrderServiceForm });
+      data.dialogFields[field.name] = { value, valid };
+      setData({
+        ...data,
+        dialogFields: { ...data.dialogFields },
+        fieldsToRefresh: field.dialog_field_responders,
+      });
+    }
   };
 
   const getCommonProps = (field, fieldData, data, fieldId, onChange) => ({
-    disabled: !!data.fieldsToRefresh.length > 0,
+    disabled: !data.isOrderServiceForm || !!data.fieldsToRefresh.length > 0,
     invalid: !fieldData.valid,
     value: fieldData.value,
     readOnly: field.read_only,

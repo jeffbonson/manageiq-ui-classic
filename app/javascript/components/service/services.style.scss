@@ -1,4 +1,4 @@
-.order-service-form-container {
+.service-container {
   .tabs {
     display: flex;
     flex-direction: column;
@@ -78,6 +78,16 @@
             .field-checkbox {
               display: flex;
               flex-direction: column;
+            }
+
+            .time-picker-container {
+              display: flex;
+              gap: 10px;
+
+              .time-picker {
+                width: 100px;
+                margin-top: -2px;
+              }
             }
           }
           .refresh-field-item {

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { MultiSelect } from 'carbon-components-react';
+import { FilterableMultiSelect } from 'carbon-components-react';
 import { requiredLabel, fieldComponentId } from '../../helper';
 import FieldLabel from '../FieldLabel';
 import ServiceValidator from '../../ServiceValidator';
@@ -12,17 +12,19 @@ const MultiDropDownField = ({ field, options }) => {
   const fieldData = data.dialogFields[field.name];
 
   const onChange = ({ selectedItems }) => {
-    const { valid, value } = ServiceValidator.validateField({ value: selectedItems, field });
-    data.dialogFields[field.name] = { value, valid };
-    setData({
-      ...data,
-      dialogFields: { ...data.dialogFields },
-      fieldsToRefresh: field.dialog_field_responders,
-    });
+    if (data.isOrderServiceForm) {
+      const { valid, value } = ServiceValidator.validateField({ value: selectedItems, field, isOrderServiceForm: data.isOrderServiceForm });
+      data.dialogFields[field.name] = { value, valid };
+      setData({
+        ...data,
+        dialogFields: { ...data.dialogFields },
+        fieldsToRefresh: field.dialog_field_responders,
+      });
+    }
   };
 
   return (
-    <MultiSelect.Filterable
+    <FilterableMultiSelect
       disabled={!!data.fieldsToRefresh.length > 0}
       invalid={!fieldData.valid}
       id={fieldComponentId(field)}

@@ -11,6 +11,7 @@ export const DIALOG_FIELD_TYPES = {
 
 export const ServiceType = {
   order: 'orderServiceForm',
+  serviceDialog: 'serviceDialog',
 };
 
 export const RefreshStatus = {
